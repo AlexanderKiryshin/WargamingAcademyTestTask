@@ -16,7 +16,7 @@ namespace Assets.Scripts
         private GameObject goal;
         public void Initialize(GameObject gameField)
         {
-            foreach (Block block in GameData.GameField.Values)
+            foreach (Block block in GameField.Board.Values)
             {
                 if (block.Filled)
                 {
@@ -32,7 +32,7 @@ namespace Assets.Scripts
                 block.Object.name = block.ToString();
             }
             Arrow[] arrows = new Arrow[COUNT_ARROWS];
-            for (int i = 0; i < GameData.COUNT_ARROWS; i++)
+            for (int i = 0; i < GameField.COUNT_ARROWS; i++)
             {
                 arrows[i] = new Arrow();
                 arrows[i].arrow = Instantiate(arrow, new Vector3(0, 0, -2), new Quaternion(0, 0, 0, 0));
@@ -40,36 +40,36 @@ namespace Assets.Scripts
                 arrows[i].arrow.transform.parent = gameField.transform;
                 arrows[i].arrow.SetActive(false);
             }
-            GameData.Arrows = arrows;
-            for (int i=0;i<GameData.Goals.Length;i++)
+            GameField.Arrows = arrows;
+            for (int i=0;i<GameField.Goals.Length;i++)
             {
-                Vector3 vector = new Vector3(GameData.Goals[i].Position.x *Configuration.DISTANCE_FROM_CENTERS_BLOCKS
+                Vector3 vector = new Vector3(GameField.Goals[i].Position.x *Configuration.DISTANCE_FROM_CENTERS_BLOCKS
                     + Configuration.GOAL_OFFSET.x,
-                    (GameData.Goals[i].Position.y-1) *Configuration.DISTANCE_FROM_CENTERS_BLOCKS+ 
+                    (GameField.Goals[i].Position.y-1) *Configuration.DISTANCE_FROM_CENTERS_BLOCKS+ 
                    Configuration.GOAL_DIAMETER + Configuration.GOAL_OFFSET.y, -2);
-                GameData.Goals[i].Object= Instantiate(goal, vector, new Quaternion(0, 0, 0, 0));
-                SpriteRenderer sr = GameData.Goals[i].Object.GetComponent<SpriteRenderer>();
-                sr.color = GameData.Goals[i].GetRGBColor();
+                GameField.Goals[i].Object= Instantiate(goal, vector, new Quaternion(0, 0, 0, 0));
+                SpriteRenderer sr = GameField.Goals[i].Object.GetComponent<SpriteRenderer>();
+                sr.color = GameField.Goals[i].GetRGBColor();
             }
         }
         public static void HideArrows()
         {
-            for (int i = 0; i < GameData.COUNT_ARROWS; i++)
+            for (int i = 0; i < GameField.COUNT_ARROWS; i++)
             {
-                GameData.Arrows[i].arrow.SetActive(false);
+                GameField.Arrows[i].arrow.SetActive(false);
             }
             // Update is called once per frame
         }
         public static void ShowBlueArrow(int index)
         {
-            GameData.Arrows[index].arrow.SetActive(true);
-            SpriteRenderer sr = GameData.Arrows[index].arrow.GetComponent<SpriteRenderer>();
+            GameField.Arrows[index].arrow.SetActive(true);
+            SpriteRenderer sr = GameField.Arrows[index].arrow.GetComponent<SpriteRenderer>();
             sr.color = UnityEngine.Color.blue;
         }
         public static void ShowGrayArrow(int index)
         {
-            GameData.Arrows[index].arrow.SetActive(true);
-            SpriteRenderer sr = GameData.Arrows[index].arrow.GetComponent<SpriteRenderer>();
+            GameField.Arrows[index].arrow.SetActive(true);
+            SpriteRenderer sr = GameField.Arrows[index].arrow.GetComponent<SpriteRenderer>();
             sr.color = UnityEngine.Color.gray;
         }
         public static void ActivateArrow(Direction direction, Vector3 coordinateBlock)
@@ -96,19 +96,19 @@ namespace Assets.Scripts
                     index = 3;
                     break;
             }
-            Block block = GameData.TryFindBlock(new Vector2(coordinateBlock.x + x*Configuration.DISTANCE_FROM_CENTERS_BLOCKS,
+            Block block = GameField.TryFindBlock(new Vector2(coordinateBlock.x + x*Configuration.DISTANCE_FROM_CENTERS_BLOCKS,
                 coordinateBlock.y + y*Configuration.DISTANCE_FROM_CENTERS_BLOCKS));
             if ((block != null) && (block.Filled == false))
             {
-                GameData.Arrows[index].isActive = true;
+                GameField.Arrows[index].isActive = true;
                 Draw.ShowBlueArrow(index);
             }
             else
             {
-                GameData.Arrows[index].isActive = false;
+                GameField.Arrows[index].isActive = false;
                 Draw.ShowGrayArrow(index);
             }
-            GameData.Arrows[index].arrow.transform.position = new Vector3(
+            GameField.Arrows[index].arrow.transform.position = new Vector3(
                     coordinateBlock.x+x*Configuration.DISTANCE_ARROW_FROM_CENTR_BLOCK,
                      coordinateBlock.y + y * Configuration.DISTANCE_ARROW_FROM_CENTR_BLOCK,
                     coordinateBlock.z - 1);

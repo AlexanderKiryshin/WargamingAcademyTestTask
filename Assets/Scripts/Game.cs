@@ -1,12 +1,15 @@
 ﻿using Assets.Blocks;
 using Assets.Scripts;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Game : MonoBehaviour
 {
     [SerializeField]
     private GameObject gameField;
+    [SerializeField]
+    private GameObject text;
+
     // Use this for initialization
     void Start()
     {
@@ -15,19 +18,20 @@ public class Game : MonoBehaviour
         ds.Initialize(gameField);
 
     }
+
     private void FixedUpdate()
     {
-        bool goalIsAchieved = true; ;
-        foreach (Block block in GameData.GameField.Values)
+        bool goalIsAchieved = true;
+        foreach (Block block in GameField.Board.Values)
         {
-            for (int i=0;i<GameData.Goals.Length;i++)
+            for (int i = 0; i < GameField.Goals.Length; i++)
             {
                 if (block is ColorBlock)
                 {
-                    if ((Mathf.Round(block.CoordinateOnBoard.x/
+                    if ((Mathf.Round(block.CoordinateOnBoard.x /
                         Configuration.DISTANCE_FROM_CENTERS_BLOCKS)
-                        != GameData.Goals[i].Position.x)
-                        ||((ColorBlock)block).Color!=GameData.Goals[i].Color)
+                        != GameField.Goals[i].Position.x)
+                        || ((ColorBlock)block).Color != GameField.Goals[i].Color)
                     {
                         goalIsAchieved = false;
                     }
@@ -45,8 +49,15 @@ public class Game : MonoBehaviour
         }
         if (goalIsAchieved)
         {
-            SceneManager.LoadScene(1);
-                
+            StartCoroutine(EndLevel());
         }
     }
+
+    public IEnumerator EndLevel()
+    {
+        StartCoroutine(ScreenFader.FadeSceneOut());
+        yield return new WaitForSeconds(0.6f);
+        text.SetActive(true);
+    }
 }
+

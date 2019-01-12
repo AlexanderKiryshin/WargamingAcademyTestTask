@@ -24,7 +24,7 @@ public class ObjectClicker : MonoBehaviour
     }
     private void CheckAndClickBlock(RaycastHit hit)
     {
-        Block block = GameData.TryFindBlock(hit.transform.position);
+        Block block = GameField.TryFindBlock(hit.transform.position);
         if (block != null)
         {
             if ((lastClickedBlock!=null)&&
@@ -51,11 +51,11 @@ public class ObjectClicker : MonoBehaviour
     }
     private void CheckAndClickArrow(RaycastHit hit)
     {
-        Arrow arrow = GameData.TryFindArrow(hit.transform.position);
+        Arrow arrow = GameField.TryFindArrow(hit.transform.position);
         if ((arrow != null) && (arrow.isActive))
         {
             Direction dir = DefineDirection(arrow.arrow.transform.position);
-            GameData.SwapBlocks(lastClickedBlock, dir);
+            GameField.SwapBlocks(lastClickedBlock, dir);
         }
     }
     private Direction DefineDirection(Vector2 positionArrow)

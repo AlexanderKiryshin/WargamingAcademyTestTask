@@ -13,6 +13,7 @@ namespace Assets.Blocks
             CoordinateOnBoard = CalculateCoordinates(coordinateOnBoard);
             Color = color;
         }
+
         public override void ReactionOnClick()
         {
             Draw.ActivateArrow(Direction.Left, CoordinateOnBoard);
@@ -33,7 +34,7 @@ namespace Assets.Blocks
         }
         private void AddAdjacentBlock(ref List<Block> adjacentBlocks, Vector3 coordinate)
         {
-            Block result = GameData.TryFindBlock(coordinate);
+            Block result = GameField.TryFindBlock(coordinate);
             if (result != null)
             {
                 adjacentBlocks.Add(result);

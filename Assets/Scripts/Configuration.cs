@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts
 {
-   public static class Configuration
+    public class Configuration
     {
         public const float DISTANCE_FROM_CENTERS_BLOCKS = 0.6f;
         public const float DISTANCE_ARROW_FROM_CENTR_BLOCK = 0.25f;

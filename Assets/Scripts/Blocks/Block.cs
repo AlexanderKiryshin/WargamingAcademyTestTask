@@ -27,7 +27,7 @@ namespace Assets.Blocks
             }
             set
             {
-                coordinateOnBoard = value;// CalculateCoordinates(value);
+                coordinateOnBoard = value;
             }
         }
         public GameObject Object { get; set; }
